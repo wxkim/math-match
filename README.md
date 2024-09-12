@@ -25,11 +25,9 @@ To be completed by November 18th, 2024.
 - The game can be completed, start to finish, as expected.
 - All code is properly documented and commented.
 
-## Program Structure
+## Class Diagram
 ```mermaid
-flowchart TD
-    A[Program Initialize] -->|Game Start| B(Round)
-    B --> C{Decision}
-    C -->|One| D[Result 1]
-    C -->|Two| E[Result 2] 
+classDiagram
+    class main
+    class game
 ```

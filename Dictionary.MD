@@ -62,6 +62,15 @@ Note that sevice codes 30 or above are exclusive to the MARS application. This i
 
 > as java.util.Date.getTime()
 
+### Random Number Generator
+
+| Service    | $v0 Code | Argument Registers      | Notes |
+| ---------- | -------- | ----------------------- | ----- |
+| set seed   | 40       | $a0 : i.d. of pseudorng |       |
+| random int | 41       | $a0 : i.d. of pseduorng |       |
+
+Uses underlying Java pseudorandom number generators provided by the java.util.Random class. Each stream (identified by $a0 contents) is modeled by a different Random object. There are no default seed values, so use the Set Seed service (40) if replicated random sequences are desired.
+
 ### Tone Generator via Musical Instrument Digital Interface (MIDI)
 
 | Service              | $v0 Code | Argument Registers       | Notes                                                                          |
@@ -74,7 +83,7 @@ Note that sevice codes 30 or above are exclusive to the MARS application. This i
 
 > as javax.sound.midi package
 
-## **pitch ($a0)** :
+#### **pitch ($a0)** :
 
 Accepts a positive byte value (0-127) that denotes a pitch as it would be represented in MIDI. Each number is one semitone / half-step in the chromatic scale.
 
@@ -92,11 +101,11 @@ If the parameter value is outside this range, it applies a default value 60 whic
 
 > Note: To produce these pitches in other octaves, add or subtract multiples of 12.
 
-## **duration in milliseconds ($a1)** :
+#### **duration in milliseconds ($a1)** :
 
 Accepts a positive integer value that is the length of the tone in milliseconds. If the parameter value is negative, it applies a default value of one second (1000 milliseconds).
 
-## **instrument ($a2)** :
+#### **instrument ($a2)** :
 
 Accepts: (0-127)
 Default: 0 as Acoustic GP
@@ -116,7 +125,7 @@ The 128 available patches are divided into instrument families of 8:
 For a full list of General MIDI instruments, see www.midi.org/about-midi/gm/gm1sound.shtml.
 The General MIDI channel 10 percussion key map is not relevant to the toneGenerator method because it always defaults to MIDI channel 1.
 
-## **volume ($a3)** :
+#### **volume ($a3)** :
 
 Accepts: (0-127) where 127 is the loudest and 0 is silent. This value denotes MIDI velocity which refers to the initial attack of the tone.
 Default value : 100.

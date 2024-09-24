@@ -59,6 +59,9 @@ Note that sevice codes 30 or above are exclusive to the MARS application. This i
 | Service     | $v0 Code | Argument Registers | Notes                                                                                  |
 | ----------- | -------- | ------------------ | -------------------------------------------------------------------------------------- |
 | System time | 30       | takes none         | Since MARS is a java application, the system time is sourced using JSE from Unix epoch |
+| Sleep       | 32       | $a0 : time in ms   | Causes MARS thread to sleep for (at least) the specified number of milliseconds.       |
+
+Note: this timing will not be precise, as the Java implementation will add some overhead.
 
 > as java.util.Date.getTime()
 

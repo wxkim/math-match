@@ -16,7 +16,13 @@ values: .asciiz " 6 ", "12 ", "10 ", "15 ",	# value board 4 by 4 bank
 generated: .space 128 					# 16 x 8 reserved mem for board creation
 randArray: .space 128 					# 16 x 8 reserved mem for second rng engine (placement)
 
-board: .asciiz 	" ? ", " ? ", " ? ", " ? ", 	# default board hidden
+board: .asciiz 	" ? ", " ? ", " ? ", " ? ", 		# default board hidden
+		" ? ", " ? ", " ? ", " ? ", 
+		" ? ", " ? ", " ? ", " ? ", 
+		" ? ", " ? ", " ? ", " ? "
+		
+flippableBoard: .asciiz 	
+		" ? ", " ? ", " ? ", " ? ", 		# store flipped cards here, and copy to board if successful
 		" ? ", " ? ", " ? ", " ? ", 
 		" ? ", " ? ", " ? ", " ? ", 
 		" ? ", " ? ", " ? ", " ? "
@@ -31,14 +37,21 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 		0,0,0,0,
 		0,0,0,0
 		
+_1space: .asciiz " "
+_2space: .asciiz "  "
+_3space: .asciiz "   "
 
 .text
-print:
+
+.globl printBoard, printCoveredBoard
+printBoard:
 	la $t0, exprs
 	li $v0, 4
 	
 	la $a0, 0($t0)
 	syscall
+	
+	li
 	
 	la $a0, 4($t0)
 	syscall
@@ -48,4 +61,11 @@ print:
 	
 	li $v0, 10
 	syscall
+	
+	
+#memcpy??
+printCoveredBoard:
+	addi $sp $sp -8
+	
+	addi $sp $sp 8
 	

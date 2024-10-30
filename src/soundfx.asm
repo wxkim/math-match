@@ -1,4 +1,4 @@
-.globl
+.globl card_select_sound
  
 .text
 

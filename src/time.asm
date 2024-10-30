@@ -9,4 +9,3 @@ time_end_lo: .word 0
 
 .text
 find_time:
-	li $v0

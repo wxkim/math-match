@@ -2,7 +2,7 @@
 
 
 .data
-
+.align 2
 exprs: .asciiz	"2x3", "3x4", "5x2", "5x3", 	# expression board 4 by 4 bank
 		"4x4", "2x7", "6x6", "4x5", 
 		"3x7", "8x5", "5x5", "5x6", 
@@ -51,7 +51,7 @@ printBoard:
 	la $a0, 0($t0)
 	syscall
 	
-	li
+
 	
 	la $a0, 4($t0)
 	syscall

@@ -112,7 +112,7 @@ match_fail_sound:
 	jr $ra
 	
 
-game_win_sound:
+game_win_sound: #place holder c major scale for now; change it into something better l8r
 	addi $sp $sp -20
 	sw   $a0, 0($sp) 
 	sw   $a1, 4($sp)
@@ -123,7 +123,7 @@ game_win_sound:
 	li $v0, 31
 	li $a0, 60
 	li $a1, 1400
-	li $a2, 25
+	li $a2,25
 	li $a3, 60
 	syscall
 
@@ -146,7 +146,7 @@ game_win_sound:
 	li $v0, 31
 	li $a0, 64
 	li $a1, 1000
-	li $a2, 25
+	li $a2,25
 	li $a3, 60
 	syscall
 
@@ -157,7 +157,7 @@ game_win_sound:
 	li $v0, 31
 	li $a0, 65
 	li $a1, 1000
-	li $a2, 25
+	li $a2,25
 	li $a3, 60
 	syscall
 
@@ -168,7 +168,7 @@ game_win_sound:
 	li $v0, 31
 	li $a0, 67
 	li $a1, 1000
-	li $a2, 25
+	li $a2,25
 	li $a3, 60
 	syscall
 
@@ -179,7 +179,7 @@ game_win_sound:
 	li $v0, 31
 	li $a0, 69
 	li $a1, 1000
-	li $a2, 25
+	li $a2,25
 	li $a3, 60
 	syscall
 
@@ -190,7 +190,7 @@ game_win_sound:
 	li $v0, 31
 	li $a0, 71
 	li $a1, 1000
-	li $a2, 25
+	li $a2,25
 	li $a3, 60
 	syscall
 
@@ -201,7 +201,7 @@ game_win_sound:
 	li $v0, 31
 	li $a0, 72
 	li $a1, 1000
-	li $a2, 25
+	li $a2,25
 	li $a3, 60
 	syscall
 	

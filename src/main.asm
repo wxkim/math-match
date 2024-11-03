@@ -31,16 +31,23 @@ main:
 	#jal match_success_sound
 	#jal match_fail_sound
 	#jal card_select_sound
-	jal game_win_sound
+	#jal game_win_sound
+	
+	#jal clear_console
 	
 	li $v0 4
 	la $a0 _main_msg_ingame_
 	syscall
-	
-	#la $a0 exprs
+
 	
 	#jal game_end_popup
-
+	
+	# addi $s0 $0 8
+	# every successful card match: addi $s0 $s0 -1
+	# loop while $s0 not 0
+	# break and end game when $s0 = 0
+	
+	
 	
 	li $v0 10
 	syscall

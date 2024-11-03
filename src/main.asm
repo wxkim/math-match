@@ -12,7 +12,8 @@
 # second rng engine for placement during board creation (8 times)
 
 .data
-_main_msg_: .asciiz "In main (game loading)..."
+_main_msg_: .asciiz "In main (game loading)...\n"
+_main_msg_ingame_: .asciiz "\nPlaying game"
 
 .globl main 
 
@@ -22,7 +23,19 @@ main:
 	la $a0 _main_msg_
 	syscall
 	
+	jal game_start_popup
 	
+	la $a0 exprs
+	jal printBoard
+	
+	li $v0 4
+	la $a0 _main_msg_ingame_
+	syscall
+	
+	#la $a0 exprs
+	
+	#jal game_end_popup
+
 	
 	li $v0 10
 	syscall

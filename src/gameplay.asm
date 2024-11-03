@@ -1,5 +1,5 @@
 .data
-game_begin_message_string: .asciiz "Ready to Play? Press Ok to Begin."
+game_begin_message_string: .asciiz "Press OK to begin."
 game_end_message_string: .asciiz "Game over! Your time: "
 game_quit_message_string: .asciiz "You have quit the game. "
 

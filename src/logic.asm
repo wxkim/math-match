@@ -1,5 +1,5 @@
 ## Game Logic file
-
+#
 
 .data
 .align 2
@@ -36,36 +36,83 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 		0,0,0,0,
 		0,0,0,0,
 		0,0,0,0
-		
-_1space: .asciiz " "
-_2space: .asciiz "  "
-_3space: .asciiz "   "
+
+.include "macros.asm"
+.include "const.asm"
 
 .text
 
-.globl printBoard, printCoveredBoard
+.globl printBoard,board,flippableBoard, exprs, values
+
 printBoard:
-	la $t0, exprs
-	li $v0, 4
+	addi $sp $sp -4
+	sw $ra 0($sp)
 	
-	la $a0, 0($t0)
+	addi $t0 $a0 0		#$t0 <- $a0 holds the address of the array as argument
+	addi $t8 $0 0
+	j print_loop
+	
+print_loop:
+	
+	printNewLine
+	
+	la $a0 _plusline	# print a line of pluses
 	syscall
+	
+	fill_board_line_macro
+	printNewLine
 	
 
-	
-	la $a0, 4($t0)
+	la $a0 left_wall_board 		# first row element
 	syscall
 	
-	la $a0, 8($t0)
+	la $a0 0($t0)
 	syscall
 	
-	li $v0, 10
+	la $a0 middle_wall_board	#second row element
+	syscall
+	
+	la $a0 4($t0)
+	syscall
+	
+	la $a0 middle_wall_board 	#third row element
+	syscall
+	
+	la $a0 8($t0)
+	syscall
+	
+	la $a0 middle_wall_board 	#third row element
+	syscall
+	
+	la $a0 12($t0)
+	syscall
+	
+	la $a0 right_wall_board		#4th row element
+	syscall
+	
+	fill_board_line_macro
+	
+	addi $t8 $t8 1
+	addi $t0 $t0 16
+	
+	# addi $t9 $0 1
+	
+	blt $t8, 4, print_loop
+	# bne $t9 $0 return
+	
+return:
+	printNewLine
+	li $v0 4
+	la $a0 _plusline	# print a line of pluses
 	syscall
 	
 	
-#memcpy??
-printCoveredBoard:
-	addi $sp $sp -8
+	lw $ra 0($sp)			# return function
+	addi $sp $sp 4
+	jr $ra #return
 	
-	addi $sp $sp 8
+	
+	
+	
+	
 	

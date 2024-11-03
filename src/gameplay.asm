@@ -3,8 +3,6 @@ game_begin_message_string: .asciiz "Press OK to begin."
 game_end_message_string: .asciiz "Game over! Your time: "
 game_quit_message_string: .asciiz "You have quit the game. "
 
-
-
 .text
 .globl game_start_popup, game_end_popup, game_begin_message_string, game_end_message_string
 
@@ -30,5 +28,16 @@ game_end_popup:
 	li $v0 10
 	syscall ## GAME ENDS HERE
 	
+game_board_array_populate:
+	addi $sp $sp -4
+	sw $ra 0($sp)
+	
+	
+	
+	lw $ra 0($sp)
+	addi $sp $sp 4
+	jr $ra
+	
+
 	
 	

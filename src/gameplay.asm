@@ -30,5 +30,7 @@ game_end_popup:
 	li $v0 10
 	syscall ## GAME ENDS HERE
 	
+game_board_array_populate:
+	
 	
 	

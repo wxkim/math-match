@@ -107,9 +107,9 @@ return:
 	syscall
 	
 	
-	lw $ra 0($sp)			# return function
+	lw $ra 0($sp)		# return function
 	addi $sp $sp 4
-	jr $ra #return
+	jr $ra 			#return
 	
 	
 	

@@ -42,6 +42,7 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 
 .text
 
+
 .globl printBoard
 .globl board
 .globl flippableBoard
@@ -50,6 +51,7 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 .globl clear_console
 .globl generated
 .globl randArray
+
 
 printBoard:
 	addi $sp $sp -4

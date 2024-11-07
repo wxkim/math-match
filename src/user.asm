@@ -1,4 +1,4 @@
-
+# FROM HOMEWORK 3 QUESTION 2
 .globl stringToInt
 
 stringToInt:            # 1 argument in $a0

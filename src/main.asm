@@ -34,6 +34,8 @@ main:
 	#jal game_win_sound
 	
 	#jal clear_console
+	jal game_board_array_populate
+
 	
 	li $v0 4
 	la $a0 _main_msg_ingame_

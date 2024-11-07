@@ -23,7 +23,7 @@ main:
 	la $a0 _main_msg_
 	syscall
 	
-	jal game_start_popup
+	#jal game_start_popup
 	
 	la $a0 exprs
 	jal printBoard
@@ -35,15 +35,21 @@ main:
 	
 	#jal clear_console
 	jal game_board_array_populate
+
 	
 	li $v0 4
 	la $a0 _main_msg_ingame_
 	syscall
-	
-	#la $a0 exprs
+
 	
 	#jal game_end_popup
-
+	
+	# addi $s0 $0 8
+	# every successful card match: addi $s0 $s0 -1
+	# loop while $s0 not 0
+	# break and end game when $s0 = 0
+	
+	
 	
 	li $v0 10
 	syscall

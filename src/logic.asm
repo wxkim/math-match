@@ -42,6 +42,7 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 
 .text
 
+
 .globl printBoard
 .globl board
 .globl flippableBoard
@@ -50,6 +51,7 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 .globl clear_console
 .globl generated
 .globl randArray
+
 
 printBoard:
 	addi $sp $sp -4
@@ -107,16 +109,27 @@ print_loop:
 	blt $t8, 4, print_loop
 	# bne $t9 $0 return
 	
-return:
+return_from_printloop:
 	printNewLine
 	li $v0 4
 	la $a0 _plusline	# print a line of pluses
 	syscall
 	
 	
-	lw $ra 0($sp)			# return function
+	lw $ra 0($sp)		# return function
 	addi $sp $sp 4
-	jr $ra #return
+	jr $ra 			#return
+
+clear_console:
+    li $t0, 58              # print nl 58 times (to emulate clear screen)
+clear_loop:
+    printNewLine
+    subi $t0, $t0, 1        # Decrement counter
+    bgtz $t0, clear_loop    # Repeat until counter reaches zero
+    jr $ra                  # Return to caller
+
+
+
 	
 	
 	

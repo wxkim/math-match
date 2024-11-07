@@ -28,6 +28,14 @@ main:
 	la $a0 exprs
 	jal printBoard
 	
+	#jal match_success_sound
+	#jal match_fail_sound
+	#jal card_select_sound
+	#jal game_win_sound
+	
+	#jal clear_console
+	jal game_board_array_populate
+	
 	li $v0 4
 	la $a0 _main_msg_ingame_
 	syscall

@@ -42,7 +42,14 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 
 .text
 
-.globl printBoard,board,flippableBoard, exprs, values
+.globl printBoard
+.globl board
+.globl flippableBoard
+.globl exprs
+.globl values
+.globl clear_console
+.globl generated
+.globl randArray
 
 printBoard:
 	addi $sp $sp -4

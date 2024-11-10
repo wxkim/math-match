@@ -42,7 +42,6 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 
 .text
 
-
 .globl printBoard
 .globl board
 .globl flippableBoard
@@ -51,7 +50,8 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 .globl clear_console
 .globl generated
 .globl randArray
-
+.globl usedAR
+.globl usedRNG
 
 printBoard:
 	addi $sp $sp -4
@@ -62,7 +62,6 @@ printBoard:
 	j print_loop
 	
 print_loop:
-	
 	printNewLine
 	
 	la $a0 _plusline	# print a line of pluses
@@ -71,7 +70,6 @@ print_loop:
 	fill_board_line_macro
 	printNewLine
 	
-
 	la $a0 left_wall_board 		# first row element
 	syscall
 	
@@ -100,22 +98,15 @@ print_loop:
 	syscall
 	
 	fill_board_line_macro
-	
 	addi $t8 $t8 1
 	addi $t0 $t0 16
-	
-	# addi $t9 $0 1
-	
 	blt $t8, 4, print_loop
-	# bne $t9 $0 return
 	
 return_from_printloop:
 	printNewLine
 	li $v0 4
 	la $a0 _plusline	# print a line of pluses
 	syscall
-	
-	
 	lw $ra 0($sp)		# return function
 	addi $sp $sp 4
 	jr $ra 			#return

@@ -1,4 +1,5 @@
 # FROM HOMEWORK 3 QUESTION 2
+
 .globl stringToInt
 
 stringToInt:            # 1 argument in $a0
@@ -20,8 +21,6 @@ loop:
     j loop                  # jump back repeat loop
 print: 
     addiu $a0, $v0, 0       # save value in v0
-    li $v0 1
-    syscall
     j exit
 
 invalid:
@@ -31,3 +30,6 @@ invalid:
 exit:
     li $v0 10
     syscall
+    
+################################################################################
+

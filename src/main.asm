@@ -39,7 +39,7 @@ main:
 	#jal clear_console
 	
 	li $v0 4
-	la $a0 _main_msg_ingame_
+	la $a0 _main_msg_ingame_ 
 	syscall
 
 	

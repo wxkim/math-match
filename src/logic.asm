@@ -38,7 +38,6 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 		0,0,0,0
 
 .include "macros.asm"
-.include "const.asm"
 
 .text
 

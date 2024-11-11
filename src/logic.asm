@@ -36,6 +36,12 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 		0,0,0,0,
 		0,0,0,0,
 		0,0,0,0
+		
+match_matrix: .word 					# probably unused for now
+		0,0,0,0,				# integer array for used for checking successful match
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0
 
 .include "macros.asm"
 
@@ -51,6 +57,7 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 .globl randArray
 .globl usedAR
 .globl usedRNG
+.globl match_matrix
 
 printBoard:
 	addi $sp $sp -4

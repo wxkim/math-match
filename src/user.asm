@@ -1,11 +1,18 @@
 # Conversions
 
 .data 
+.align 2
 matchMessage_debug_T: .asciiz "It's a match!"
 matchMessage_debug_F: .asciiz "It's not a match!"
+userPromptForCard: .asciiz "Enter the index of the card you want to flip, or enter (Q/q) to quit:  "
+inputBuffer: .space 24
+cardSelectinIndex_debug: .asciiz "\nYou selected card #"
 
 .globl stringToInt
 .globl solveCard
+.globl read_user_input
+
+.text
 
 stringToInt:            	# 1 argument in $a0
 	addi $sp $sp -4
@@ -101,6 +108,40 @@ return_from_solveCard:
 	
 ################################################################################
 	
+read_user_input:
+	addi $sp $sp -8
+	sw $ra 0($sp)
+	sw $v0 4($sp)
+
+	li $v0 4
+	la $a0 userPromptForCard
+	syscall
+	
+	li $v0 8
+	la $a0 inputBuffer
+	li $a1 2
+	syscall
+	
+	# lw $t0 0($a0)
+	# addi $a0 $t0 0
+	la $a0 inputBuffer
+	jal stringToInt
+	addi $t0 $v0 0
+	
+	li $v0 4
+	la $a0 cardSelectinIndex_debug
+	syscall
+	
+	li $v0 1
+	addi $a0 $t0 0
+	syscall
+	
+	lw $ra 0($sp)             
+    	lw $v0 4($sp)             
+    	addi $sp $sp 8            
+    	jr $ra       
+    	
+    	# TODO: check for quit or non-numeric answer               
 	
 	
 	

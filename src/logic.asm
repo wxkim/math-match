@@ -14,7 +14,7 @@ values: .asciiz " 6 ", "12 ", "10 ", "15 ",	# value board 4 by 4 bank
 		"18 ", " 7 ", "24 ", "35 "
 
 generated: .space 128 					# 16 x 8 reserved mem for board creation
-randArray: .space 128 					# 16 x 8 reserved mem for second rng engine (placement)
+randArray: .space 128 					# 16 x 8 reserved mem for second rng engine (placement) !>THIS IS THE IMPORTANT ONE<!
 
 board: .asciiz 	" ? ", " ? ", " ? ", " ? ", 		# default board hidden
 		" ? ", " ? ", " ? ", " ? ", 

@@ -9,6 +9,7 @@ game_quit_message_string: .asciiz "You have quit the game. "
 .globl game_begin_message_string
 .globl game_end_message_string
 .globl game_board_array_populate
+.globl game_start_function
 
 
 game_start_popup:
@@ -152,6 +153,12 @@ return_from_gbap:
 	
 ########################################################################################
 	
+game_start_function:
+
+game_loop:
+
+
+
 
 	
 	

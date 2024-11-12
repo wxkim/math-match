@@ -16,12 +16,15 @@ main:
 	la $a0 _main_msg_
 	syscall
 	
+	#jal read_user_input	
+	
 	#jal game_start_popup
 	
-	jal game_board_array_populate
+	#jal game_board_array_populate
 	
-	la $a0 randArray
-	jal printBoard
+	#la $a0 randArray
+	#jal printBoard
+
 	
 	#jal match_success_sound
 	#jal match_fail_sound
@@ -30,17 +33,14 @@ main:
 	
 	#jal clear_console
 	
-	li $v0 4
-	la $a0 _main_msg_ingame_ 
-	syscall
+	#li $v0 4
+	#la $a0 _main_msg_ingame_ 
+	#syscall
+	
+	
 
 	
 	#jal game_end_popup
-	
-	# addi $s0 $0 8
-	# every successful card match: addi $s0 $s0 -1
-	# loop while $s0 not 0
-	# break and end game when $s0 = 0
 	
 	
 	

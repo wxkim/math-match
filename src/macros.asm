@@ -4,6 +4,19 @@
 # header file
 # author
 
+.data
+_1space: .asciiz " "
+_2space: .asciiz "  "
+_3space: .asciiz "   "
+_plusline:		.asciiz "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+inner_board_fill_line: 	.asciiz "+                     +                     +                     +                     +"
+
+left_wall_board: .asciiz "+         "
+middle_wall_board: .asciiz "         +         "
+right_wall_board: .asciiz "         +"
+
+_newline: .asciiz "\n"
+
 .macro fill_board_line_macro
 	la $a0 _newline		# print a newline
 	syscall

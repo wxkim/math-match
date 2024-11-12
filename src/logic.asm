@@ -14,7 +14,7 @@ values: .asciiz " 6 ", "12 ", "10 ", "15 ",	# value board 4 by 4 bank
 		"18 ", " 7 ", "24 ", "35 "
 
 generated: .space 128 					# 16 x 8 reserved mem for board creation
-randArray: .space 128 					# 16 x 8 reserved mem for second rng engine (placement)
+randArray: .space 128 					# 16 x 8 reserved mem for second rng engine (placement) !>THIS IS THE IMPORTANT ONE<!
 
 board: .asciiz 	" ? ", " ? ", " ? ", " ? ", 		# default board hidden
 		" ? ", " ? ", " ? ", " ? ", 
@@ -36,9 +36,14 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 		0,0,0,0,
 		0,0,0,0,
 		0,0,0,0
+		
+match_matrix: .word 					# probably unused for now
+		0,0,0,0,				# integer array for used for checking successful match
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0
 
 .include "macros.asm"
-.include "const.asm"
 
 .text
 
@@ -52,6 +57,7 @@ usedRNG: .word 	0,0,0,0,				# boolean array for used indiced in rng (vals)
 .globl randArray
 .globl usedAR
 .globl usedRNG
+.globl match_matrix
 
 printBoard:
 	addi $sp $sp -4

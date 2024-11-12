@@ -9,6 +9,7 @@ game_quit_message_string: .asciiz "You have quit the game. "
 .globl game_begin_message_string
 .globl game_end_message_string
 .globl game_board_array_populate
+.globl game_start_function
 
 
 game_start_popup:
@@ -50,6 +51,7 @@ game_board_array_populate:
 	la $s2 values
 	la $s3 generated
 	la $s4 randArray
+	la $s5 match_matrix
 	
 random_select_loop:
 	li $v0 42		# get rng 0 <= x < 16
@@ -90,9 +92,9 @@ shuffleRandArray:
 	la $a0 generated
 	la $a1 randArray
 	la $a2 usedAR
-	jal shuffle
+	jal shuffle		# call function from prologue
 	
-	lw $ra 32($sp)
+	lw $ra 32($sp)		# save registers on the stack
 	lw $s0 28($sp)
 	lw $s1 24($sp)
 	lw $s2 20($sp)
@@ -118,8 +120,8 @@ shuffle:
 	addi $t0 $0 0
 	
 shuffle_loop:
-	beq $t0 16 return_from_gbap
-	lw $t1 0($s0)
+	beq $t0 16 return_from_gbap	# check for counter = 16
+	lw $t1 0($s0)			# get the first 
 	
 	li $a1 16
 	li $v0 42
@@ -149,6 +151,14 @@ return_from_gbap:
 	addi $sp $sp 16
 	jr $ra
 	
+########################################################################################
+	
+game_start_function:
+
+game_loop:
+
+
+
 
 	
 	

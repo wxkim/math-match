@@ -170,7 +170,7 @@ game_start_function:
 	li $t7 0 # used for flipping cards
 	li $t9 0 # counts number of matches user makes
 game_loop_one:
-	li $s4 11500
+	li $s4 50000
 	# user wins game
 	beq $t9 8 game_win
 	

@@ -27,8 +27,3 @@ To be completed by November 18th, 2024.
 - The program compiles and runs without error/crash.
 - The game can be completed, start to finish, as expected.
 - All code is properly documented and commented.
-
-## Terminology and Glossary
-
-- **mult cards** : cards that have a multiplication expression on them: `7 x 6`
-- **lit cards** : cards that have a literal value on them: `42`

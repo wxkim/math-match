@@ -1,10 +1,11 @@
 .data
 game_begin_message_string: .asciiz "Press OK to begin."
-game_end_message_string: .asciiz "Game over! Your time: "
+game_end_message_string: .asciiz "\nGame over! Time taken: "
 game_quit_message_string: .asciiz "You have quit the game. "
 user_out_of_bound: .asciiz "\nINDEX OUT OF BOUNDS. Range is (0-15)\n"
 user_error_same_index: .asciiz "\nINDEX WAS ALREADY INPUTTED. Please input two different indexes.\n"
 user_error_index_match: .asciiz "\nINDEX IS ALREADY MATCHED. Please input two indexes that have yet to be matched.\n"
+user_win_match: .asciiz "\nYOU WON! # of attempts: "
 
 .text
 .globl game_start_popup
@@ -156,21 +157,21 @@ return_from_gbap:
 ########################################################################################
 	
 game_start_function:
-	addi $sp $sp -24
+	addi $sp $sp -28
 	sw $ra 0($sp)
 	sw $s0 4($sp) # first cards index
 	sw $s1 8($sp) # second cards index
 	sw $s2 12($sp) # first cards value
 	sw $s3 16($sp) # second cards value
-	sw $s4 20($sp) # size of display delay loop
-
+	sw $s4 20($sp) # counts number of matches user makes
+	sw $s5 24($sp) # stores first cards index for exception handling
+	
 	li $t4 0 # used for flipping cards
 	li $t5 0 # used for flipping cards
 	li $t6 0 # used for flipping cards
 	li $t7 0 # used for flipping cards
-	li $t9 0 # counts number of matches user makes
+	li $t8 0 # used for counting number of attempts
 game_loop_one:
-	li $s4 50000
 	# user wins game
 	beq $t9 8 game_win
 	
@@ -179,14 +180,17 @@ game_loop_one:
 	
 	# read first index value
 	jal read_user_input
-	bgt $a0 15 user_invalid_input
-	beq $a0 -1 user_invalid_input
-
-	# save index for later use
-	move $t5 $a0
+	
+	# save index
 	move $s0 $a0
+	move $s5 $a0
+	
+	# check for invalid input
+	bgt $s0 15 user_invalid_input
+	beq $s0 -1 user_invalid_input
 	
 	# check if user has already matched at inputted index
+	move $t5 $s0
 	jal check_prev_index
 	
 	# display flipped card
@@ -204,13 +208,15 @@ game_loop_one:
 game_loop_two:
 	# read second index value
 	jal read_user_input
-	bgt $a0 15 user_invalid_input
-	beq $a0 -1 user_invalid_input
-	beq $a0 $s0 user_same_index
 	
-	# save index for later use
-	move $t5 $a0
+	# save index
 	move $s1 $a0
+	move $t5 $a0
+	
+	# check for invalid input
+	bgt $s1 15 user_invalid_input
+	beq $s1 -1 user_invalid_input
+	beq $s1 $s5 user_same_index
 	
 	# check if user has already matched at inputted index
 	jal check_prev_index
@@ -227,15 +233,12 @@ game_loop_two:
 	jal solveCard
 	move $s3 $v0
 	
+	# increment attempt counter
+	addi $s4 $s4 1
+	
+	# check for match success/fail and branch accordingly
 	beq $s3 $s2 match_success
 	bne $s3 $s2 match_fail
-	
-	# display new board 
-	jal clear_console
-	la $a0 board
-	jal printBoard
-
-	j game_loop_one
 	
 flip_card:
 
@@ -272,7 +275,6 @@ match_success:
 	la $t4 board
 	add $t6 $s1 $t4
 	sw $t7 0($t6)
-	
 
 	jal clear_console
 
@@ -300,17 +302,13 @@ match_fail:
 	add $t6 $t4 $s1
 	sw $t7 0($t6)
 	
-	jal display_delay_buffer
+	li $a0 2750
+	li $v0 32
+	syscall
+	
 	jal clear_console
 	
 	j game_loop_one
-
-# a buffer so user has time to see incorrect match before clearing console	
-display_delay_buffer:
-	subi $s4 $s4 1
-	bnez $s4 display_delay_buffer
-	
-	jr $ra
 	
 # Exception handling if user inputs an index that was previously matched		
 check_prev_index:
@@ -331,7 +329,7 @@ display_error_match:
 	li $v0 4
 	syscall
 	
-	j game_loop_one
+	j reset_flippable_board
 	
 # Exception handling if user inputs oob index	
 user_invalid_input:
@@ -340,7 +338,7 @@ user_invalid_input:
 	la $a0 user_out_of_bound
 	syscall
 	
-	j game_loop_one
+	j reset_flippable_board
 	
 # Exception handling if user inputs the same index 
 user_same_index:
@@ -349,7 +347,10 @@ user_same_index:
 	la $a0 user_error_same_index
 	syscall
 	
-	# Reset flippable board to get rid of the invalid input by user
+	j reset_flippable_board
+	
+# resets flippable board if user has invalid input
+reset_flippable_board:
 	la $t4 board
 	sll $s0 $s0 2
 	add $t6 $t4 $s0
@@ -372,13 +373,28 @@ user_same_index:
 	
 # User won game return to main	
 game_win:
+	# Display user win message with number of attempts
+	la $a0 user_win_match
+	li $v0 4
+	syscall
+	
+	move $a0 $s4
+	li $v0 1 
+	syscall
+	
+	li $a0 '\n'
+	li $v0 11
+	syscall
+	
 	lw $ra 0($sp)
 	lw $s0 4($sp)
 	lw $s1 8($sp)
 	lw $s2 12($sp)
 	lw $s3 16($sp)
 	lw $s4 20($sp)
-	addi $sp $sp 24
+	lw $s5 24($sp)
+
+	addi $sp $sp 28
 	
 	jr $ra
 

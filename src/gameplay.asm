@@ -3,6 +3,8 @@ game_begin_message_string: .asciiz "Press OK to begin."
 game_end_message_string: .asciiz "\nGame over! Time taken: "
 game_quit_message_string: .asciiz "You have quit the game. "
 user_out_of_bound: .asciiz "\nINDEX OUT OF BOUNDS. Range is (0-15)\n"
+user_success_match: .asciiz "\n Succesful match!"
+user_fail_match: .asciiz "\n No match!"
 user_error_same_index: .asciiz "\nINDEX WAS ALREADY INPUTTED. Please input two different indexes.\n"
 user_error_index_match: .asciiz "\nINDEX IS ALREADY MATCHED. Please input two indexes that have yet to be matched.\n"
 user_win_match: .asciiz "\nYOU WON! # of attempts: "
@@ -277,7 +279,10 @@ match_success:
 	sw $t7 0($t6)
 
 	jal clear_console
-
+	la $a0 user_success_match
+	li $v0 4
+	syscall
+	
 	j game_loop_one	
 	
 match_fail:
@@ -301,6 +306,10 @@ match_fail:
 	la $t4 flippableBoard
 	add $t6 $t4 $s1
 	sw $t7 0($t6)
+	
+	la $a0 user_fail_match
+	li $v0 4
+	syscall
 	
 	li $a0 2750
 	li $v0 32

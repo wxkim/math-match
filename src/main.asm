@@ -26,7 +26,6 @@ main:
 	jal game_board_array_populate
 	
 	# game start goes into game loop
-	jal game_start_popup
 	jal game_start_function
 	
 	# user won game

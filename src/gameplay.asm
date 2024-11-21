@@ -10,33 +10,23 @@ user_error_index_match: .asciiz "\nINDEX IS ALREADY MATCHED. Please input two in
 user_win_match: .asciiz "\nYOU WON! # of attempts: "
 
 .text
-.globl game_start_popup
-.globl game_end_popup
+#.globl game_start_popup
 .globl game_begin_message_string
 .globl game_end_message_string
 .globl game_board_array_populate
 .globl game_start_function
 
-game_start_popup:
-	addi $sp $sp -4		#adjust stack pointer
-	sw $ra 0($sp)		#save register in stack pointer
-	li $v0 55
-	la $a0 game_begin_message_string
-	la $a1 2
-	syscall
-	lw $ra 0($sp)
-	addi $sp $sp 4
-	jr $ra #return
+# game_start_popup:
+#	addi $sp $sp -4		#adjust stack pointer
+#	sw $ra 0($sp)		#save register in stack pointer
+#	li $v0 55
+#	la $a0 game_begin_message_string
+#	la $a1 2
+#	syscall
+#	lw $ra 0($sp)
+#	addi $sp $sp 4
+#	jr $ra #return
 	
-game_end_popup:
-	li $v0 56
-	la $a0 game_end_message_string
-	jal find_current_time_ms
-	add $a1 $0 $0 # -> this is where time in integer goes; implement time first
-	syscall
-	
-	li $v0 10
-	syscall
 ########################################################################################
 	
 game_board_array_populate:
@@ -188,8 +178,8 @@ game_loop_one:
 	move $s5 $a0
 	
 	# check for invalid input
-	bgt $s0 15 user_invalid_input
-	beq $s0 -1 user_invalid_input
+	bgt $s0 15 user_invalid_input1
+	beq $s0 -1 user_invalid_input1
 	
 	# check if user has already matched at inputted index
 	move $t5 $s0
@@ -216,8 +206,8 @@ game_loop_two:
 	move $t5 $a0
 	
 	# check for invalid input
-	bgt $s1 15 user_invalid_input
-	beq $s1 -1 user_invalid_input
+	bgt $s1 15 user_invalid_input2
+	beq $s1 -1 user_invalid_input2
 	beq $s1 $s5 user_same_index
 	
 	# check if user has already matched at inputted index
@@ -340,8 +330,16 @@ display_error_match:
 	
 	j reset_flippable_board
 	
-# Exception handling if user inputs oob index	
-user_invalid_input:
+# Exception handling if user inputs oob index
+user_invalid_input1:
+	jal clear_console
+	li $v0 4
+	la $a0 user_out_of_bound
+	syscall
+	
+	j game_loop_one	
+	
+user_invalid_input2:
 	jal clear_console
 	li $v0 4
 	la $a0 user_out_of_bound

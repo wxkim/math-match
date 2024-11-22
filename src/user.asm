@@ -2,12 +2,12 @@
 
 .data 
 .align 2
-matchMessage_debug_T: .asciiz "It's a match!"
-matchMessage_debug_F: .asciiz "It's not a match!"
-userPromptForCard: .asciiz "\nEnter the index of the card you want to flip (for single digit index start with 0), or enter (Q/q) to quit: "
+matchMessage_debug_T: .asciiz "\t\t\tIt's a match!"
+matchMessage_debug_F: .asciiz "\t\t\tIt's not a match!"
+userPromptForCard: .asciiz "\n\t\t\tEnter the index of the card you want to flip (for single digit index start with 0), or enter (Q/q) to quit: "
 inputBuffer: .space 24
-cardSelectinIndex_debug: .asciiz "\nYour selected card #"
-user_quit_message: .asciiz "\nThanks for playing! Now Exiting."
+cardSelectinIndex_debug: .asciiz "\n\t\t\tYour selected card #"
+user_quit_message: .asciiz "\n\t\t\tThanks for playing! Now Exiting."
 
 
 .globl stringToInt
@@ -44,14 +44,14 @@ print:
     	j exit
 
 invalid:
-    	li $v0 -1
-    	j exit
+    	li $v0 -1		# return value set to -1 if input invalid
+    	j exit		
 user_quit:
-	li $v0 -2 
+	li $v0 -2 		# return value set to -2 if input "q" or "Q"
 	j exit
 
 exit: 
-    	lw $ra 0($sp)
+    	lw $ra 0($sp)		# load return address from stack
     	addi $sp $sp 4
     	jr $ra
 
@@ -118,27 +118,27 @@ read_user_input:
 	sw $ra 0($sp)
 	sw $v0 4($sp)
 	
+	# prompt user for card
 	li $v0 4
 	la $a0 userPromptForCard
 	syscall
 	
+	# input buffer
 	li $v0 8
 	la $a0 inputBuffer
 	li $a1 3
 	syscall
 	
-	#lw $t0 0($a0)
-	#addi $a0 $t0 0
 	la $a0 inputBuffer
 	jal stringToInt
 	addi $t0 $v0 0
 	
-	beq $t0 -2 user_quit_game
+	beq $t0 -2 user_quit_game # branches to exit out of program when user inputs "q" or "Q"
 
+	# Displays selected index of card
 	li $v0 4
 	la $a0 cardSelectinIndex_debug
 	syscall
-	
 	li $v0 1
 	move $a0 $t0
 	syscall

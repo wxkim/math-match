@@ -1,13 +1,13 @@
 .data
 game_begin_message_string: .asciiz "Press OK to begin."
-game_end_message_string: .asciiz "\nGame over! Time taken: "
-game_quit_message_string: .asciiz "You have quit the game. "
-user_out_of_bound: .asciiz "\nINDEX OUT OF BOUNDS. Range is (0-15)\n"
-user_success_match: .asciiz "\n Succesful match!"
-user_fail_match: .asciiz "\n No match!"
-user_error_same_index: .asciiz "\nINDEX WAS ALREADY INPUTTED. Please input two different indexes.\n"
-user_error_index_match: .asciiz "\nINDEX IS ALREADY MATCHED. Please input two indexes that have yet to be matched.\n"
-user_win_match: .asciiz "\nYOU WON! # of attempts: "
+game_end_message_string: .asciiz "\n\t\t\tGame over! Time taken: "
+game_quit_message_string: .asciiz "\t\t\tYou have quit the game. "
+user_out_of_bound: .asciiz "\n\t\t\tINDEX OUT OF BOUNDS. Range is (0-15)\n"
+user_success_match: .asciiz "\n\t\t\t Succesful match!"
+user_fail_match: .asciiz "\n\t\t\t No match!"
+user_error_same_index: .asciiz "\n\t\t\tINDEX WAS ALREADY INPUTTED. Please input two different indexes.\n"
+user_error_index_match: .asciiz "\n\t\t\tINDEX IS ALREADY MATCHED. Please input two indexes that have yet to be matched.\n"
+user_win_match: .asciiz "\n\t\t\tYOU WON! # of attempts: "
 
 .text
 #.globl game_start_popup
@@ -103,13 +103,13 @@ shuffleRandArray:
 	jr $ra
 	
 shuffle:
-	addi $sp $sp -16
+	addi $sp $sp -16		# shuffle function prologue
 	sw $ra 12($sp)
 	sw $s0 8($sp)
 	sw $s1 4($sp)
 	sw $s2 0($sp)
 	
-	addi $s0 $a0 0
+	addi $s0 $a0 0			# load argument registers
 	addi $s1 $a1 0
 	addi $s2 $a2 0
 	addi $t0 $0 0
@@ -118,20 +118,20 @@ shuffle_loop:
 	beq $t0 16 return_from_gbap	# check for counter = 16
 	lw $t1 0($s0)			# get the first 
 	
-	li $a1 16
+	li $a1 16			# random number generator load
 	li $v0 42
 	syscall
 	
-	sll $t2 $a0 2
+	sll $t2 $a0 2			# get random index from memory address
 	add $t3 $s2 $t2
-	lw $t4 0($t3)
+	lw $t4 0($t3)			# retrieve (pull) from random memory address
 	
-	bne $t4 0 shuffle_loop
+	bne $t4 0 shuffle_loop		# if its 0, retry, already used
 	
-	add $t2 $s1 $t2
-	sw $t1 0($t2)
-	addi $t2 $0 1
-	sw $t2 0($t3)
+	add $t2 $s1 $t2			# add the offset address from the generated array
+	sw $t1 0($t2)			# find
+	addi $t2 $0 1			# load a 1 to mark used
+	sw $t2 0($t3)			# mark
 	
 	addi $s0 $s0 4
 	addi $t0 $t0 1
@@ -139,7 +139,7 @@ shuffle_loop:
 	j shuffle_loop
 	
 return_from_gbap:
-	lw $ra 12($sp)
+	lw $ra 12($sp)			# function epilogue
 	lw $s0 8($sp)
 	lw $s1 4($sp)
 	lw $s2 0($sp)
@@ -268,13 +268,14 @@ match_success:
 	add $t6 $s1 $t4
 	sw $t7 0($t6)
 
+	# clear console and display succesful match message
 	jal clear_console
 	la $a0 user_success_match
 	li $v0 4
 	syscall
 	
 	j game_loop_one	
-	
+
 match_fail:
 	jal match_fail_sound
 	
@@ -301,10 +302,10 @@ match_fail:
 	li $v0 4
 	syscall
 	
+	# use sleep so that user has time to see their incorrect match before console clears 
 	li $a0 2750
 	li $v0 32
 	syscall
-	
 	jal clear_console
 	
 	j game_loop_one
@@ -330,7 +331,7 @@ display_error_match:
 	
 	j reset_flippable_board
 	
-# Exception handling if user inputs oob index
+# Exception handling if user has oob 1st input
 user_invalid_input1:
 	jal clear_console
 	li $v0 4
@@ -338,14 +339,24 @@ user_invalid_input1:
 	syscall
 	
 	j game_loop_one	
-	
+# exception handling if user has oob 2nd input	
 user_invalid_input2:
 	jal clear_console
 	li $v0 4
 	la $a0 user_out_of_bound
 	syscall
 	
-	j reset_flippable_board
+	# resets board after invalid input
+	la $t4 board
+	sll $s0 $s0 2
+	add $t6 $t4 $s0
+	lw $t7 0($t6)
+	
+	la $t4 flippableBoard
+	add $t6 $t4 $s0
+	sw $t7 0($t6)
+	
+	j game_loop_one
 	
 # Exception handling if user inputs the same index 
 user_same_index:

@@ -58,6 +58,7 @@ match_matrix: .word 					# probably unused for now
 .globl usedAR
 .globl usedRNG
 .globl match_matrix
+.globl printJoystick
 
 printBoard:
 	addi $sp $sp -4
@@ -65,8 +66,7 @@ printBoard:
 	
 	addi $t0 $a0 0		#$t0 <- $a0 holds the address of the array as argument
 	addi $t8 $0 0
-	j print_loop
-	
+
 print_loop:
 	printNewLine
 	
@@ -113,10 +113,54 @@ return_from_printloop:
 	li $v0 4
 	la $a0 _plusline	# print a line of pluses
 	syscall
+	
 	lw $ra 0($sp)		# return function
 	addi $sp $sp 4
 	jr $ra 			#return
 
+# Prints ascii joystick
+printJoystick:
+
+	printNewLine
+	la $a0 joystick_top1
+	syscall
+	printNewLine
+	la $a0 joystick_top2
+	syscall
+	la $a0 firstcircle_level1
+	syscall
+	printNewLine
+	la $a0 joystick_handle
+	syscall
+	la $a0 firstcircle_level2
+	syscall
+	printNewLine
+	la $a0 joystick_handle
+	syscall
+	la $a0 firstcircle_level3
+	syscall
+	printNewLine
+	la $a0 joystick_lower1
+	syscall
+	la $a0 secondcircle_level1
+	syscall
+	la $a0 thirdcircle_level1
+	syscall
+	printNewLine
+	la $a0 joystick_lower2
+	syscall
+	la $a0 secondcircle_level2
+	syscall
+	la $a0 thirdcircle_level2
+	syscall
+	printNewLine
+	la $a0 secondcircle_level3
+	syscall
+	la $a0 thirdcircle_level3
+	syscall
+	printNewLine
+	
+	jr $ra
 clear_console:
     li $t0, 58              # print nl 58 times (to emulate clear screen)
 clear_loop:

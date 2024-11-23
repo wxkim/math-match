@@ -215,6 +215,6 @@ game_win_sound: #place holder c major scale for now; change it into something be
 	
 	jr $ra
 
-# do some game end jingle;;; implement later, closer to due date
+
 
 

@@ -267,12 +267,21 @@ match_success:
 	la $t4 board
 	add $t6 $s1 $t4
 	sw $t7 0($t6)
-
-	# clear console and display succesful match message
-	jal clear_console
+	
 	la $a0 user_success_match
 	li $v0 4
 	syscall
+	
+	# If index is less then 8 tilt joystick left, right if more then 8
+	blt $s5 8 move_joystickleft_success
+	jal printJoystickRight
+	
+	# Use sleep to display success message 
+	li $a0 1500
+	li $v0 32
+	syscall
+	
+	jal clear_console
 	
 	j game_loop_one	
 
@@ -302,6 +311,10 @@ match_fail:
 	li $v0 4
 	syscall
 	
+	# If index is less then 8 tilt joystick left, right if more then 8
+	blt $s5 8 move_joystickleft_fail
+	jal printJoystickRight	
+			
 	# use sleep so that user has time to see their incorrect match before console clears 
 	li $a0 2750
 	li $v0 32
@@ -309,7 +322,33 @@ match_fail:
 	jal clear_console
 	
 	j game_loop_one
+
+# Moves joystick left if index is less than 8
+move_joystickleft_success:
+	jal printJoystickLeft
 	
+	# Use sleep to display success message 
+	li $a0 1500
+	li $v0 32
+	syscall
+	
+	jal clear_console
+	
+	j game_loop_one
+
+# Moves joystick left after failed match
+move_joystickleft_fail:
+	jal printJoystickLeft
+	
+	# Use sleep to display error message
+	la $a0 2750
+	li $v0 32
+	syscall
+	
+	jal clear_console
+	
+	j game_loop_one
+
 # Exception handling if user inputs an index that was previously matched		
 check_prev_index:
 	# checks if there is a question mark at indexed card and makes user redo input if there isnt

@@ -25,17 +25,13 @@ main:
 	
 	# randomize board and populate randArray
 	jal game_board_array_populate
-	la $a0 board
-	jal printBoard
-	jal printJoystick
-	
+
 	# game start goes into game loop
-	#jal game_start_function
+	jal game_start_function
 	
 	# user won game
-	# la $a0 board
-	# jal printBoard 
-	# jal game_win_sound
+	la $a0 board
+	jal printBoard 
 	
 	# loads start time to calculate final time
 	lw $s0 0 ($sp)
@@ -72,6 +68,11 @@ main:
 	la $a0 seconds_display
 	li $v0 4
 	syscall
+	
+	jal printJoystick
+	# plays game won sound
+	jal game_win_sound
+	
 	
 	# Exit program
 	li $v0 10

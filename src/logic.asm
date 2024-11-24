@@ -59,6 +59,8 @@ match_matrix: .word 					# probably unused for now
 .globl usedRNG
 .globl match_matrix
 .globl printJoystick
+.globl printJoystickLeft
+.globl printJoystickRight
 
 printBoard:
 	addi $sp $sp -4
@@ -122,6 +124,7 @@ return_from_printloop:
 printJoystick:
 
 	printNewLine
+	printNewLine
 	la $a0 joystick_top1
 	syscall
 	printNewLine
@@ -155,6 +158,93 @@ printJoystick:
 	syscall
 	printNewLine
 	la $a0 secondcircle_level3
+	syscall
+	la $a0 thirdcircle_level3
+	syscall
+	printNewLine
+	
+	jr $ra
+# print ascii joystick tilted left & button pressed
+printJoystickLeft:
+	printNewLine
+	printNewLine
+	la $a0 joystickleft_top1
+	syscall
+	printNewLine
+	la $a0 joystickleft_top2
+	syscall
+	la $a0 firstcircle_level1
+	syscall
+	printNewLine
+	la $a0 joystickleft_handle1
+	syscall
+	la $a0 firstcircle_level2
+	syscall
+	printNewLine
+	la $a0 joystickleft_handle2
+	syscall
+	la $a0 firstcircle_level3
+	syscall
+	printNewLine
+	la $a0 joystickleft_lower1
+	syscall
+	la $a0 tiltcircle_level1
+	syscall
+	la $a0 thirdcircle_level1
+	syscall
+	printNewLine
+	la $a0 joystickleft_lower2
+	syscall
+	la $a0 tiltcircle_level2
+	syscall
+	la $a0 thirdcircle_level2
+	syscall
+	printNewLine
+	la $a0 tiltcircle_level3
+	syscall
+	la $a0 thirdcircle_level3
+	syscall
+	printNewLine
+	
+	jr $ra
+
+# Prints ascii joystick titled right & button pressed
+printJoystickRight:
+	printNewLine
+	printNewLine
+	la $a0 joystickright_top1
+	syscall
+	printNewLine
+	la $a0 joystickright_top2
+	syscall
+	la $a0 firstcircle_level1
+	syscall
+	printNewLine
+	la $a0 joystickright_handle1
+	syscall
+	la $a0 firstcircle_level2
+	syscall
+	printNewLine
+	la $a0 joystickright_handle2
+	syscall
+	la $a0 firstcircle_level3
+	syscall
+	printNewLine
+	la $a0 joystickright_lower1
+	syscall
+	la $a0 tiltcircle_level1
+	syscall
+	la $a0 thirdcircle_level1
+	syscall
+	printNewLine
+	la $a0 joystickright_lower2
+	syscall
+	la $a0 tiltcircle_level2
+	syscall
+	la $a0 thirdcircle_level2
+	syscall
+	printNewLine
+	la $a0 tiltcircle_level3
 	syscall
 	la $a0 thirdcircle_level3
 	syscall

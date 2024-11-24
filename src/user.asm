@@ -4,10 +4,11 @@
 .align 2
 matchMessage_debug_T: .asciiz "\t\t\tIt's a match!"
 matchMessage_debug_F: .asciiz "\t\t\tIt's not a match!"
-userPromptForCard: .asciiz "\n\t\t\tEnter the index of the card you want to flip (for single digit index start with 0), or enter (Q/q) to quit: "
+userPromptForCard: .asciiz "\n\t\t\tEnter the index of the card you want to flip (for single digit index start with 0), or enter (Q/q) to quit "
 inputBuffer: .space 24
 cardSelectinIndex_debug: .asciiz "\n\t\t\tYour selected card #"
 user_quit_message: .asciiz "\n\t\t\tThanks for playing! Now Exiting."
+center_text: .asciiz "\t\t\t"
 
 
 .globl stringToInt
@@ -122,8 +123,13 @@ read_user_input:
 	li $v0 4
 	la $a0 userPromptForCard
 	syscall
+	jal printJoystick
 	
-	# input buffer
+	la $a0 center_text
+	li $v0 4
+	syscall
+	
+	# reads user input in form of string
 	li $v0 8
 	la $a0 inputBuffer
 	li $a1 3

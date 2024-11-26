@@ -1,8 +1,7 @@
 ## Game Logic file
-#
 
 .data
-.align 2
+.align 2 # specified byte boundry of a word
 exprs: .asciiz	"2x3", "3x4", "5x2", "5x3", 	# expression board 4 by 4 bank
 		"4x4", "2x7", "6x6", "4x5", 
 		"3x7", "8x5", "5x5", "5x6", 
@@ -165,6 +164,7 @@ printJoystick:
 	
 	jr $ra
 # print ascii joystick tilted left & button pressed
+# Bottom left button is filled in to signal it being "pressed"
 printJoystickLeft:
 	printNewLine
 	printNewLine
@@ -209,6 +209,7 @@ printJoystickLeft:
 	jr $ra
 
 # Prints ascii joystick titled right & button pressed
+# Bottom left button is filled in to signal it being "pressed"
 printJoystickRight:
 	printNewLine
 	printNewLine

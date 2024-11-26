@@ -249,7 +249,8 @@ match_success:
 	addi $t9 $t9 1 # increment match counter
 	jal match_success_sound
 	
-	# create new board with matched cards flipped over
+	# create new board with matched cards flipped over1
+	# loads from flippable board and stores in board
 	la $t4 flippableBoard
 	sll $s0 $s0 2
 	add $t6 $s0 $t4
@@ -289,6 +290,7 @@ match_fail:
 	jal match_fail_sound
 	
 	# resets flippable board with question marks in respective indexes
+	# loads from board and stores in flippableBoard
 	la $t4 board
 	sll $s0 $s0 2
 	add $t6 $t4 $s0
@@ -378,7 +380,7 @@ user_invalid_input1:
 	syscall
 	
 	j game_loop_one	
-# exception handling if user has oob 2nd input	
+# Exception handling if user has oob 2nd input	
 user_invalid_input2:
 	jal clear_console
 	li $v0 4

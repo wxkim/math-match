@@ -75,6 +75,7 @@ solveCard:				# 1 argument in $a0 <- contains the number of card chosen  ;; read
 	
 	beq $t1 'x' parseExpression	# if word[1] = 'x' ;; branch 
 	bne $t1 'x' parseValue		# if word[1] != 'x' ;; branch
+# Parses the 0 and 2nd index if the expression, converts them, and multiplies them
 parseExpression:
 	lb $t1 0($t0)
 	lb $t2 2($t0)
@@ -86,7 +87,7 @@ parseExpression:
 	addi $v0 $t0 0
 	
 	j return_from_solveCard
-	
+# Parses the entire value, converting it to an integer
 parseValue:
 	li $t2 0
 	lbu $t1 0($t0)            # load first digit character

@@ -1,8 +1,6 @@
 # list of macros for ease of use.
 # link compiled with ".include"
 # does not contain any procedures, only macros.
-# header file
-# author
 
 .data
 _1space: .asciiz " "

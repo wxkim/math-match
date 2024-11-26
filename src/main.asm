@@ -8,6 +8,7 @@ _main_msg_: .asciiz "In main (game loading)...\n"
 _main_msg_ingame_: .asciiz "\nPlaying game"
 minutes_display : .asciiz " minutes and "
 seconds_display: .asciiz " seconds!"
+
 .text
 .globl main 
 main:
@@ -24,14 +25,13 @@ main:
 	
 	# randomize board and populate randArray
 	jal game_board_array_populate
-	
+
 	# game start goes into game loop
 	jal game_start_function
 	
 	# user won game
 	la $a0 board
 	jal printBoard 
-	jal game_win_sound
 	
 	# loads start time to calculate final time
 	lw $s0 0 ($sp)
@@ -68,6 +68,11 @@ main:
 	la $a0 seconds_display
 	li $v0 4
 	syscall
+	
+	jal printJoystick
+	# plays game won sound
+	jal game_win_sound
+	
 	
 	# Exit program
 	li $v0 10

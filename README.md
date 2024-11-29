@@ -6,6 +6,8 @@ The project is based on the matching game hosted [here](https://www.mathsisfun.c
 
 To be completed by November 18th, 2024.
 
+> _This repository was archived on November 28th, 2024._
+
 ---
 
 ## Program Description
